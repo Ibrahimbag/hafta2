@@ -1,4 +1,4 @@
-# hafta2
+# Student Management
 
 ![demo](demo.png)
 
