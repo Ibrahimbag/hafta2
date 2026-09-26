@@ -86,10 +86,12 @@ namespace hafta2
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            var sql = @"SELECT * FROM Students
-                        WHERE (@name = '' OR Name LIKE @name)
-                          AND (@surname = '' OR Surname LIKE @surname)
-                          AND (@email = '' OR Email LIKE @email)";
+            var sql = @"
+                SELECT * FROM Students
+                WHERE Name LIKE @name
+                AND Surname LIKE @surname
+                AND Email LIKE @email
+            ";
 
             var command = new SqlCommand(sql, conn);
 
