@@ -12,12 +12,13 @@ namespace hafta2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            listele();
+            list_results();
         }
 
+        //SqlConnection conn = new SqlConnection("Data Source=DESKTOP-2FRKVQK\\SQLEXPRESS; initial catalog=StudentDB; integrated security=true; Trusted_Connection=True; TrustServerCertificate=True;");
         SqlConnection conn = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB; initial catalog=Students; integrated security=true");
 
-        void listele()
+        void list_results()
         {
             conn.Open();
 
@@ -30,8 +31,8 @@ namespace hafta2
 
             dataGridView1.DataSource = dt;
         }
-        
-        private void btnEkle_Click(object sender, EventArgs e)
+
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             conn.Open();
 
@@ -45,16 +46,16 @@ namespace hafta2
 
             conn.Close();
 
-            listele();
+            list_results();
         }
 
         int selectedId;
 
-        private void btnSil_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             conn.Open();
 
-            var command = new SqlCommand("DELETE FROM Students WHERE id = @id ", conn);
+            var command = new SqlCommand("DELETE FROM Students WHERE Id = @id ", conn);
 
             command.Parameters.AddWithValue("id", selectedId);
 
@@ -62,14 +63,14 @@ namespace hafta2
 
             conn.Close();
 
-            listele();
+            list_results();
         }
 
-        private void btnGuncelle_Click(object sender, EventArgs e)
+        private void btnUpdate_Click(object sender, EventArgs e)
         {
             conn.Open();
 
-            var command = new SqlCommand("UPDATE Students SET Name = @name, Surname = @surname, Email = @email WHERE id = @id", conn);
+            var command = new SqlCommand("UPDATE Students SET Name = @name, Surname = @surname, Email = @email WHERE Id = @id", conn);
 
             command.Parameters.AddWithValue("id", selectedId);
             command.Parameters.AddWithValue("name", txtName.Text);
@@ -80,7 +81,30 @@ namespace hafta2
 
             conn.Close();
 
-            listele();
+            list_results();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            var sql = @"SELECT * FROM Students
+                        WHERE (@name = '' OR Name LIKE @name)
+                          AND (@surname = '' OR Surname LIKE @surname)
+                          AND (@email = '' OR Email LIKE @email)";
+
+            var command = new SqlCommand(sql, conn);
+
+            command.Parameters.AddWithValue("@name", "%" + txtName.Text + "%");
+            command.Parameters.AddWithValue("@surname", "%" + txtSurname.Text + "%");
+            command.Parameters.AddWithValue("@email", "%" + txtEmail.Text + "%");
+
+            conn.Open();
+
+            var reader = command.ExecuteReader();
+            var dt = new DataTable();
+            dt.Load(reader);
+            dataGridView1.DataSource = dt;
+
+            conn.Close();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
