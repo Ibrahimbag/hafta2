@@ -16,7 +16,7 @@ namespace hafta2
         }
 
         //SqlConnection conn = new SqlConnection("Data Source=DESKTOP-2FRKVQK\\SQLEXPRESS; initial catalog=StudentDB; integrated security=true; Trusted_Connection=True; TrustServerCertificate=True;");
-        SqlConnection conn = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB; initial catalog=Students; integrated security=true");
+        SqlConnection conn = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB; initial catalog=StudentDB; integrated security=true");
 
         void list_results()
         {
